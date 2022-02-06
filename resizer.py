@@ -85,7 +85,11 @@ def resize(folder, width, res):
         o = messagebox.askokcancel(title="BW Image Mover", message="Resize width is less than 800px Continue?")
         if not o:
             return
-
+    # Massive image warning
+    if width > 7680:
+        o = messagebox.askokcancel(title="BW Image Mover", message="Resize width is more than 7680px (8K) Continue?")
+        if not o:
+            return
     # Get the user to confirm
     mstring = "Resizing Images in " + folder + " to a width of " + str(width) + " at " + str(res) + \
               "dpi. THIS CANNOT BE UNDONE."
