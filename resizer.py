@@ -1,5 +1,4 @@
 import os
-import shutil
 from tkinter import *
 from tkinter import ttk, messagebox
 from tkinter import filedialog
@@ -8,7 +7,6 @@ from PIL import Image
 
 # Main frame
 def UI():
-
     gui = Tk()
     gui.geometry("375x175")
     gui.title("Bulk image resizer")
@@ -23,13 +21,13 @@ def UI():
     dpi = StringVar()
     options = [
         600,
+        600,
         300,
         144,
         72
     ]
 
     width.set(1920)
-    dpi.set("300")
 
     # first row, source folder
     s_label = Label(gui, text="Source Folder")
@@ -55,7 +53,7 @@ def UI():
     d_option.grid(row=2, column=1, padx=(10, 10), pady=(10, 5))
 
     # start button
-    c = ttk.Button(gui, text="move images", command=lambda: resize(src_path, width, dpi))
+    c = ttk.Button(gui, text="Resize images", command=lambda: resize(src_path, width, dpi))
     c.grid(row=2, column=2, padx=(10, 10), pady=(10, 10))
 
     return gui
