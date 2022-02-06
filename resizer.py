@@ -73,7 +73,7 @@ def getFolderPath(folder_path):
 def resize(folder, width, res):
     folder = folder.get()
     width = int(width.get())
-    res = res.get()
+    res = float(res.get())
 
     # Don't do anything unless directory path is specified
     if folder == "":
@@ -87,7 +87,7 @@ def resize(folder, width, res):
             return
 
     # Get the user to confirm
-    mstring = "Resizing Images in " + folder + " to a width of " + str(width) + " at " + res + \
+    mstring = "Resizing Images in " + folder + " to a width of " + str(width) + " at " + str(res) + \
               "dpi. THIS CANNOT BE UNDONE."
     option = messagebox.askokcancel(title="BW Image Mover", message=mstring)  # returns True or False
     if not option:
@@ -99,16 +99,19 @@ def resize(folder, width, res):
         f_img = folder + "/" + file
         img = Image.open(f_img)
 
-        # Calculate resize percentage
-        wpercent = (width / float(img.size[0]))
+        # don't resize if the image is already that size, and ignore gifs
+        w, h = img.size
+        if w != width and not f_img.endswith("gif"):
+            # Calculate resize percentage
+            wpercent = (width / float(img.size[0]))
 
-        # Calculate new high using above
-        hsize = int((float(img.size[1]) * float(wpercent)))
+            # Calculate new high using above
+            hsize = int((float(img.size[1]) * float(wpercent)))
 
-        # Resize and save image
-        img = img.resize((width, hsize), Image.ANTIALIAS)
-        img.save(f_img, dpi=(res, res))
-        img.close()
+            # Resize and save image
+            img = img.resize((width, hsize), Image.ANTIALIAS)
+            img.save(f_img, dpi=(res, res))
+            img.close()
 
 
 mainframe = UI()
