@@ -115,6 +115,10 @@ def resize(folder, width, res):
             img.save(f_img, dpi=(res, res))
             img.close()
 
+def main():
+    mainframe = UI()
+    mainframe.mainloop()
 
-mainframe = UI()
-mainframe.mainloop()
+
+if __name__ == "__main__":
+    main()
