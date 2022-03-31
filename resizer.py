@@ -1,3 +1,4 @@
+# Bulk image resizer, takes all the images in a given fold and resizes it while maintaining aspect ratio.
 import os
 from tkinter import *
 from tkinter import ttk, messagebox
@@ -5,7 +6,7 @@ from tkinter import filedialog
 from PIL import Image
 
 
-# Main frame
+# GUI Menu stuff
 def UI():
     gui = Tk()
     gui.geometry("375x175")
@@ -70,7 +71,10 @@ def getFolderPath(folder_path):
 
 def resize(folder, width, res):
     folder = folder.get()
-    width = int(width.get())
+    try:
+        width = int(width.get())
+    except ValueError:
+        messagebox.showwarning(title="BW Image Mover", message="Non-integer value entered")
     res = float(res.get())
 
     # Don't do anything unless directory path is specified
@@ -96,24 +100,33 @@ def resize(folder, width, res):
         return
 
     # grabs all the images in the given folder above
-    for file in os.listdir(folder):
-        # open the image
-        f_img = folder + "/" + file
-        img = Image.open(f_img)
+    try:
+        for file in os.listdir(folder):
+            # open the image
+            f_img = folder + "/" + file
+            img = Image.open(f_img)
 
-        # don't resize if the image is already that size, and ignore gifs
-        w, h = img.size
-        if w != width and not f_img.endswith("gif"):
-            # Calculate resize percentage
-            wpercent = (width / float(img.size[0]))
+            # don't resize if the image is already that size, and ignore gifs
+            w, h = img.size
+            if w != width and not f_img.endswith("gif"):
+                # Calculate resize percentage
+                wpercent = (width / float(img.size[0]))
 
-            # Calculate new high using above
-            hsize = int((float(img.size[1]) * float(wpercent)))
+                # Calculate new high using above
+                hsize = int((float(img.size[1]) * float(wpercent)))
 
-            # Resize and save image
-            img = img.resize((width, hsize), Image.ANTIALIAS)
-            img.save(f_img, dpi=(res, res))
-            img.close()
+                # Resize and save image
+                img = img.resize((width, hsize), Image.ANTIALIAS)
+                img.save(f_img, dpi=(res, res))
+                img.close()
+    # Error handling
+    except FileNotFoundError:
+        messagebox.showwarning(title="BW Image Mover", message="Unable to locate folder")
+    except PermissionError:
+        messagebox.showwarning(title="BW Image Mover", message="Permission Denied?")
+    except Exception as e:
+        m = str(e)
+        messagebox.showwarning(title="BW Image Mover", message=m)
 
 def main():
     mainframe = UI()
