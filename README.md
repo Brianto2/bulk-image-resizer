@@ -1,8 +1,12 @@
 # Bulk Image Resizer
 Resizes all the images in a folder and all of it's sub folders to the given width, while maintaining aspect ratio.
 ## Installation
-[Download](https://github.com/Brianto2/bulk-image-resizer/releases/tag/v1.0.0) and
+[Download](https://github.com/Brianto2/bulk-image-resizer/releases/tag/v1.0.1) and
 Unzip the zip file
+or via pyinstaller:
+```
+pyinstaller resizer.py
+```
 
 ## Usage:
 * Run Bulk Image Resizer.exe
