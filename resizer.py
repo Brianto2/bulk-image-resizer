@@ -4,6 +4,9 @@ from tkinter import *
 from tkinter import ttk, messagebox
 from tkinter import filedialog
 from PIL import Image
+from PIL import ImageFile
+ImageFile.LOAD_TRUNCATED_IMAGES = True
+
 
 
 # GUI Menu stuff
@@ -116,9 +119,11 @@ def resize(folder, width, res):
                 hsize = int((float(img.size[1]) * float(wpercent)))
 
                 # Resize and save image
+                print("resizing: ", file)
                 img = img.resize((width, hsize), Image.ANTIALIAS)
                 img.save(f_img, dpi=(res, res))
                 img.close()
+        print("done")
     # Error handling
     except FileNotFoundError:
         messagebox.showwarning(title="BW Image Mover", message="Unable to locate folder")
