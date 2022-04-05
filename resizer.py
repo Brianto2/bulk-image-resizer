@@ -5,8 +5,8 @@ from tkinter import ttk, messagebox
 from tkinter import filedialog
 from PIL import Image
 from PIL import ImageFile
-ImageFile.LOAD_TRUNCATED_IMAGES = True
 
+ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 
 # GUI Menu stuff
@@ -106,23 +106,25 @@ def resize(folder, width, res):
     try:
         for file in os.listdir(folder):
             # open the image
-            f_img = folder + "/" + file
-            img = Image.open(f_img)
+            f_img = os.path.join(folder, file)
+            # Do not process subdirectories, prevents the user from accidentally resizing all the files on their drive
+            if not os.path.isdir(f_img):
+                img = Image.open(f_img)
 
-            # don't resize if the image is already that size, and ignore gifs
-            w, h = img.size
-            if w != width and not f_img.endswith("gif"):
-                # Calculate resize percentage
-                wpercent = (width / float(img.size[0]))
+                # don't resize if the image is already that size, and ignore gifs
+                w, h = img.size
+                if w != width and not f_img.endswith("gif"):
+                    # Calculate resize percentage
+                    wpercent = (width / float(img.size[0]))
 
-                # Calculate new high using above
-                hsize = int((float(img.size[1]) * float(wpercent)))
+                    # Calculate new high using above
+                    hsize = int((float(img.size[1]) * float(wpercent)))
 
-                # Resize and save image
-                print("resizing: ", file)
-                img = img.resize((width, hsize), Image.ANTIALIAS)
-                img.save(f_img, dpi=(res, res))
-                img.close()
+                    # Resize and save image
+                    print("resizing: ", file)
+                    img = img.resize((width, hsize), Image.ANTIALIAS)
+                    img.save(f_img, dpi=(res, res))
+                    img.close()
         print("done")
     # Error handling
     except FileNotFoundError:
@@ -132,6 +134,7 @@ def resize(folder, width, res):
     except Exception as e:
         m = str(e)
         messagebox.showwarning(title="BW Image Mover", message=m)
+
 
 def main():
     mainframe = UI()
